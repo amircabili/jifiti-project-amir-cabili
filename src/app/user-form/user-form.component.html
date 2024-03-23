@@ -1,0 +1,43 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-sm-12">
+      <img class="float-end" src="/assets/images/JifitiLogo-1-280x280.jpg">
+    </div>
+  </div>
+  <div class="col-sm-10 mx-auto">
+    <div class="my-4 row">
+      <div class="col-sm-12">
+        <a routerLink="/users" class="btn btn-primary">Back to User List</a>
+      </div>
+    </div>
+    <div class="my-3 row">
+      <div class="col-sm-12 text-center">
+        <h2 class="text-center">User Details</h2>
+        <h6 class="text-center fw-lighter">Fill out user's personal info</h6>
+      </div>
+    </div>
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+      <div class="row justify-content-evenly pb-2">
+        <ng-container *ngFor="let field of formFields">
+          <div class="col-lg-5 col-sm-12">
+            <div class="mb-3 row">
+              <div class="form-group mb-3">
+                <label [for]="field.key" class="form-label">{{ field.label }}:</label>
+                <input [type]="field.type" class="form-control" [id]="field.key" [formControlName]="field.key"
+                       [ngClass]="{ 'is-invalid': userForm.get(field.key)?.invalid && userForm.get(field.key)?.touched }">
+                <div class="invalid-feedback" *ngIf="userForm.get(field.key)?.invalid && userForm.get(field.key)?.touched">
+                  {{ field.label }} is required
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <div class="my-5 row">
+        <div class="col-sm-12 text-center">
+          <button type="submit" class="submit btn btn-sm btn-block btn-primary">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

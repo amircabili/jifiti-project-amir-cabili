@@ -1,0 +1,32 @@
+{
+  "form_fields": [
+    {
+      "key": "first_name",
+      "label": "First Name",
+      "type": "text",
+      "order": 1,
+      "validators": ["required"]
+    },
+    {
+      "key": "last_name",
+      "label": "Last Name",
+      "type": "text",
+      "order": 2,
+      "validators": ["required"]
+    },
+    {
+      "key": "phone",
+      "label": "Phone",
+      "type": "tel",
+      "order": 3,
+      "validators": ["required", "phone"]
+    },
+    {
+      "key": "email",
+      "label": "Email",
+      "type": "email",
+      "order": 4,
+      "validators": ["required", "email"]
+    }
+  ]
+}
