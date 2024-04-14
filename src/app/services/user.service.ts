@@ -14,10 +14,10 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  getUsers(): Observable<any[]> {
-    const storedUsers = localStorage.getItem(this.localStorageKey);
-    return storedUsers ? of(JSON.parse(storedUsers)) : of([]);
-  }
+  // getUsers(): Observable<any[]> {
+  //   const storedUsers = localStorage.getItem(this.localStorageKey);
+  //   return storedUsers ? of(JSON.parse(storedUsers)) : of([]);
+  // }
 
   setUsers(users: any[]): void {
     localStorage.setItem(this.localStorageKey, JSON.stringify(users));
@@ -36,20 +36,27 @@ export class UserService {
   getFormFields(): Observable<any> {
     return this.http.get<any>(this.formFieldsUrl);
   }
+
+  // first check the initialize localstorage before asking its data  - with conditions
   initializeLocalStorage(): Observable<any> {
     const storedUsers = this.getUsersFromLocalStorage();
     if (storedUsers.length > 0) {
       console.log('Local storage already initialized with data.');
-      return of(null); // Return observable with null value
+      return of(null); // Return observable with null value Since there's no need to emit any particular data after initialization
     }
 
     return this.http.get<any>(this.usersUrl).pipe(
+      // the get here is a HTTP request This is a common practice to handle errors that might occur during the HTTP request.
+      // The pipe operator in Angular here allows us to chain multiple RxJS operators together to perform operations on the "data" emitted by an observable.
       catchError(error => {
         console.error('Error loading initial user data:', error);
         return of(null);
       }),
       switchMap((data: any) => {
+        // this switchMap is used to switch to a new observable created by of(null) after the HTTP request completes
+        // this is a great example of nested observable
         if (data && data.users && Array.isArray(data.users)) {
+          //updating the localstorage with the users data
           localStorage.setItem(this.localStorageKey, JSON.stringify(data.users));
           return of(null);
         } else {
